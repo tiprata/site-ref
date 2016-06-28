@@ -288,7 +288,7 @@
                     var rad = node.radius();
                     node.radius(rad + 5);
                     layer.draw();
-                    document.getElementById("igcoord").innerHTML = '<h2 style="font-family: Impact, Charcoal, sans-serif">'+obj.name+'</h2>'+obj.presentation;
+                    document.getElementById("igcoord").innerHTML = '<div><h2 class="kledge" style="font-family: Impact, Charcoal, sans-serif">'+obj.name+'</h2>'+ '<div class="kledge">' +obj.presentation + '</div></div>';
                     document.body.style.cursor = 'pointer';
                 });
                 node.on('touchstart', function () {
