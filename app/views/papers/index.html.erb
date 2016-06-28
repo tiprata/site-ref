@@ -1,5 +1,607 @@
-<h1>Listing papers</h1>
+<script>/***********************************************************************
+ The MIT License (MIT)
+ 
+ Copyright (c) 2013 Eugen Wagner - Jev
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ ***********************************************************************/
 
+(function($) {
+    $.fn.anysearch = function(options) {
+
+        options = $.extend({
+            reactOnKeycodes: 'all',                                      // Search only reacts on given ASCII Keycodes.
+                                                                            // Options:
+                                                                            // 'all'
+                                                                            // 'string'
+                                                                            // 'numeric'
+                                                                            // '48,49,50,51,52,53,54,55,56,57'
+                                                                            // -----------------------------------------------
+            secondsBetweenKeypress: 2,                                      // After given time anysearch.js clears the search 
+                                                                            // string. anysearch.js resets the timer on each 
+                                                                            // keystroke.
+                                                                            // Options:
+                                                                            // 0.001 - 99
+                                                                            // -----------------------------------------------
+            searchPattern: {1: '[^~,]*'},                                   // Filters the input string, before it is sent to 
+                                                                            // the search.
+                                                                            // Options:
+                                                                            // {1: '(\\d+)', 2: '((?:[a-z][0-9]+))'}
+                                                                            // -----------------------------------------------
+            minimumChars: 3,                                                // Necessary amount of charakters to start the 
+                                                                            // search script.
+                                                                            // Options: 
+                                                                            // 1 - 99
+                                                                            // -----------------------------------------------
+            liveField: false,                                               // Given selector will be filled in realtime on 
+                                                                            // writing.
+                                                                            // Options:
+                                                                            // false
+                                                                            // {selector: '#example', value: true}
+                                                                            // {selector: '#example', html: true}
+                                                                            // {selector: '#example', attr: 'title'}
+                                                                            // -----------------------------------------------
+            excludeFocus: 'input,textarea,select',                          // While one of the given selectors focused, 
+                                                                            // anysearch will be deactivated.
+                                                                            // Options:
+                                                                            // selector
+                                                                            // -----------------------------------------------
+            enterKey: 13,                                                   // ASCII Keycode for Enter.
+                                                                            // Options:
+                                                                            // ASCII charcode
+                                                                            // -----------------------------------------------
+            backspaceKey: 8,                                                // ASCII Keycode for Backspace.
+                                                                            // Options:
+                                                                            // ASCII charcode
+                                                                            // -----------------------------------------------
+            checkIsBarcodeMilliseconds: 250,                                // Time in milliseconds the barcode scanner is 
+                                                                            // allowed to need for a scan.
+                                                                            // Options:
+                                                                            // 1 - 9999
+                                                                            // -----------------------------------------------
+            checkBarcodeMinLength: 4,                                       // Minimum amount of characters for a barcode.
+                                                                            // Options:
+                                                                            // 1 - 99
+                                                                            // -----------------------------------------------
+            searchSlider: true,                                             // Activates searchslider with inputfield.
+                                                                            // Options:
+                                                                            // true
+                                                                            // false
+                                                                            // -----------------------------------------------
+            startAnysearch: function() {},                                  // Callback function will be triggered by first 
+                                                                            // reaction of anysearch.js
+                                                                            // Options:
+                                                                            // function(){ // do something }
+                                                                            // -----------------------------------------------
+            stopAnysearch: function() {},                                   // Callback function will be triggered once 
+                                                                            // anysearch.js ends.
+                                                                            // Options:
+                                                                            // function(){ // do something }
+                                                                            // -----------------------------------------------
+            minimumCharsNotReached: function(string, length, minLength) {}, // Callback function will be triggered if the 
+                                                                            // length of the search string is lower then the 
+                                                                            // value of "minimumChars".
+                                                                            // Options:
+                                                                            // function(string, length, minLength){ 
+                                                                            //     do something with string, length, minLength 
+                                                                            // }
+                                                                            // -----------------------------------------------
+            searchFunc: function(string) {},                                // Callback function for the search 
+                                                                            // (e.g. serverside script).
+                                                                            // Options:
+                                                                            // function(string){ 
+                                                                            //     do something with the string 
+                                                                            // }
+                                                                            // -----------------------------------------------             
+            patternsNotMatched: function(string, patterns) {},              // Callback function will be triggered 
+                                                                            // if "searchPattern" returns false.
+                                                                            // Options:
+                                                                            // function(string, patterns){ 
+                                                                            //     do something with string or patterns 
+                                                                            // }
+                                                                            // ----------------------------------------------- 
+            isBarcode: function(barcode) {}                                 // Callback function will be triggered if a barcode is detected.
+                                                                            // Options:
+                                                                            // function(barcode){ 
+                                                                            //     do something with the barcode 
+                                                                            // }
+        }, options);
+
+        return this.each(function() {
+
+            var startTime = null;
+            var keyTimestamp = null;
+            var keypressArr = [];
+            var timeout = setTimeout(function() {
+            });
+            var reactOnKeycodes = '';
+            var inputKeypressStartTime = null;
+
+
+            switch (options.reactOnKeycodes) {
+                case "string":
+                    reactOnKeycodes = '32,48,49,50,51,52,53,54,55,56,57,94,176,33,34,167,36,37,38,47,40,41,61,63,96,180,223,178,179,123,91,93,125,92,113,119,101,114,116,122,117,105,111,112,252,43,35,228,246,108,107,106,104,103,102,100,115,97,60,121,120,99,118,98,110,109,44,46,45,81,87,69,82,84,90,85,73,79,80,220,42,65,83,68,70,71,72,74,75,76,214,196,39,62,89,88,67,86,66,78,77,59,58,95,64,8364,126,35,124,181';
+                    break;
+                case "numeric":
+                    reactOnKeycodes = '43,45,48,49,50,51,52,53,54,55,56,57';
+                    break;
+                case "all":
+                    reactOnKeycodes = 'all';
+                    break;
+                default:
+                    reactOnKeycodes = options.reactOnKeycodes;
+                    break;
+            }
+
+            if (reactOnKeycodes !== 'all') {
+                var reactOnKeycodesArr = reactOnKeycodes.replace(/\s/g, "").split(',').map(function(x) {
+                    return parseInt(x);
+                });
+            }
+
+
+            // is last keypress XXX seconds ago 
+            var checkIsValidTime = function(keyTimestamp, seconds) {
+                if (typeof seconds === 'undefined') {
+                    seconds = options.secondsBetweenKeypress;
+                }
+                var now = new Date().getTime();
+                if ((now - keyTimestamp) <= (seconds * 1000)) {
+                    return true;
+                }
+                return false;
+            };
+
+            // delete the keypress array
+            var deleteKeypressArr = function() {
+                keypressArr = null;
+                keypressArr = [];
+                keyTimestamp = null;
+                startTime = null;
+                clearTimeout(timeout);
+                timeout = setTimeout(function() {
+                });
+                inputKeypressStartTime = null;
+            };
+
+            // search function
+            var doSearch = function(string) {
+                options.searchFunc(string);
+            };
+
+            // is an element focused
+            var isAnElementFocused = function() {
+
+                var isBool = false;
+                var excludeFocusArr = options.excludeFocus.split(',');
+                $.each(excludeFocusArr, function(i, elem) {
+                    if ($('' + $.trim(elem)).is(':focus')) {
+                        return isBool = true;
+                    }
+                });
+                return isBool;
+            };
+
+            // does a pattern match
+            var doesAPatternMatch = function(string) {
+                var isBool = false;
+                $.each(options.searchPattern, function(i, regExp) {
+                    var Regex = new RegExp(regExp);
+                    if (Regex.test(string)) {
+                        return isBool = true;
+                    }
+                });
+                if (isBool === false) {
+                    options.patternsNotMatched(string, options.searchPattern);
+                }
+                return isBool;
+            };
+
+            // backspace key action
+            var backspaceKeyAction = function(e) {
+                if (e && e.preventDefault) {
+                    e.preventDefault();
+                } else {
+                    e.returnValue = false;
+                }
+                keypressArr.pop();
+                return;
+            };
+
+            // function to execute after pressing enter
+            var generateStringAfterPressEnter = function() {
+                var string = String.fromCharCode.apply(String, keypressArr);
+                // check is barcodescanner input
+                if (checkIsBarcode(string, 4, startTime, keyTimestamp)) {
+                    var splittedStringArr = string.split('');
+                    var string = "";
+                    for (var i = 0; i < splittedStringArr.length; i++) {
+                        if (((i + 1) % 4) === 0) {
+                            string = string + splittedStringArr[i];
+                        }
+                    }
+                    options.isBarcode(string);
+                }
+                return string;
+            };
+
+            var checkIsBarcode = function(string, asciiPosition, startTime, keyTimestamp) {
+                if (((keyTimestamp - startTime) < options.checkIsBarcodeMilliseconds) && (string.length >= (options.checkBarcodeMinLength * asciiPosition))) {
+                    return true;
+                }
+                return false;
+            };
+
+            // function check length of a string
+            var checkAmountKeypressedChars = function(string) {
+                if (string.length >= options.minimumChars) {
+                    return true;
+                }
+                options.minimumCharsNotReached(string, string.length, options.minimumChars);
+                return false;
+            };
+
+            // function for filling the input
+            var fillLiveField = function(keypressArr) {
+                var string = String.fromCharCode.apply(String, keypressArr);
+                if (options.searchSlider === true) {
+                    $('#anysearch-input').val(string);
+                }
+                if (options.liveField !== false && options.liveField.selector !== null) {
+                    if (options.liveField.html === true) {
+                        $('' + options.liveField.selector).html(string);
+                        return;
+                    }
+                    if (options.liveField.value === true) {
+                        $('' + options.liveField.selector).val(string);
+                        return;
+                    }
+                    if (options.liveField.attr !== null) {
+                        $('' + options.liveField.selector).attr(options.liveField.attr, string);
+                        return;
+                    }
+                }
+            };
+
+            // function if press enter
+            var enterPressed = function() {
+                // generate string from array
+                var string = generateStringAfterPressEnter(startTime, keyTimestamp, keypressArr);
+                if (string.length >= 1) {
+                    if (doesAPatternMatch(string) === true && checkAmountKeypressedChars(string)) {
+                        doSearch(string);
+                    }
+                    deleteKeypressArr();
+                    fillLiveField(keypressArr);
+                    options.stopAnysearch();
+                    if (options.searchSlider === true) {
+                        animateCloseSearchbox();
+                    }
+                }
+            };
+
+            // function if press backspace
+            var backspacePressed = function(e) {
+                backspaceKeyAction(e);
+                fillLiveField(keypressArr);
+            };
+
+            var timeoutKeypress = function() {
+                clearTimeout(timeout);
+                timeout = setTimeout(function() {
+                    animateCloseSearchbox();
+                }, (options.secondsBetweenKeypress * 1000));
+            };
+
+            var checkReactOnKeycode = function(e) {
+                if (reactOnKeycodes === 'all') {
+                    return true;
+                }
+                if (jQuery.inArray(e.which, reactOnKeycodesArr) >= 0) {
+                    return true;
+                }
+                return false;
+            };
+
+            // enter and backspace must be handled with keydown cause of some browsers keypress event 
+            $(this).keydown(function(e) {
+                if (isAnElementFocused() === false) {
+                    if ((checkIsValidTime(keyTimestamp))
+                            && (e.which === options.enterKey || e.which === options.backspaceKey)) {
+                        keyTimestamp = new Date().getTime();
+                        if (e.which === options.enterKey) {
+                            clearTimeout(timeout);
+                            enterPressed();
+                        }
+                        if (e.which === options.backspaceKey) {
+                            if (options.searchSlider === true) {
+                                timeoutKeypress();
+                            }
+                            backspacePressed(e);
+                        }
+                    }
+                }
+            });
+
+            // handle keypress
+            $(this).keypress(function(e) {
+                // if input aso is not focues && check keydownevents for bacspace and enter key
+                if (isAnElementFocused() === false && e.which !== options.backspaceKey && e.which !== options.enterKey && checkReactOnKeycode(e)) {
+                    // completely new init or continuation
+                    if ((checkIsValidTime(keyTimestamp) || keyTimestamp === null)) {
+                        if (options.searchSlider === true) {
+                            animateOpenSearchbox();
+                        }
+                        // init
+                        if (keyTimestamp === null && e.which !== options.enterKey && e.which !== options.backspaceKey) {
+                            startTime = new Date().getTime();
+                            options.startAnysearch();
+                        }
+                        // time of keypress
+                        keyTimestamp = new Date().getTime();
+                        keypressArr.push(e.which);
+                        fillLiveField(keypressArr);
+                    } else {
+                        deleteKeypressArr();
+                        fillLiveField(keypressArr);
+                        keypressArr.push(e.which);
+                        fillLiveField(keypressArr);
+                    }
+                    if (options.searchSlider === true) {
+                        timeoutKeypress();
+                    }
+                }
+            });
+
+            if (options.searchSlider === true) {
+
+                $('<div id="anysearch-slidebox"><div id="anysearch-slidebox-button"><button id="anysearch-sidebutton" class="buttonsearch">Recherche<i class="anysearch-icon"></i></button></div><div id="anysearch-slidebox-content"><input id="anysearch-input" type="text" placeholder="Recherche..."></div></div>').appendTo('body');
+
+                $('#anysearch-slidebox').css('right', '-' + $('#anysearch-slidebox-content').outerWidth() + 'px');
+
+                // function for opening the searchsidebar
+                function animateOpenSearchbox() {
+                    setTimeout(function() {
+                        var button = $('#anysearch-slidebox').find('#anysearch-sidebutton');
+                        if (!$(button).hasClass('anysearchIsOpen')) {
+                            $('#anysearch-slidebox').animate({'right': '0px'}, 300);
+                            $(button).addClass('anysearchIsOpen');
+                        }
+                    }, 25);
+                }
+
+                // function for closing the searchsidebar
+                function animateCloseSearchbox() {
+                    setTimeout(function() {
+                        var button = $('#anysearch-slidebox').find('#anysearch-sidebutton');
+                        if ($(button).hasClass('anysearchIsOpen')) {
+                            $('#anysearch-slidebox').stop(true).animate({'right': '-' + $('#anysearch-slidebox-content').outerWidth()}, 100);
+                            $(button).removeClass('anysearchIsOpen');
+                            deleteKeypressArr();
+                            $('#anysearch-input').val('').blur();
+                        }
+                    }, 25);
+                }
+
+                // close searchsidebar if click outside the area of the searchsidebar
+                $(this).bind('click', function(e) {
+                    if (!$(e.target).is('#anysearch-input')
+                            && !$(e.target).is('#anysearch-sidebutton')
+                            && !$(e.target).is('#anysearch-slidebox-button')
+                            && !$(e.target).is('#anysearch-slidebox')
+                            && !$(e.target).is('#anysearch-slidebox-content')) {
+                        animateCloseSearchbox();
+                    }
+                });
+
+                // open and close the searchsidebar
+                $('#anysearch-sidebutton').click(function() {
+                    if (!$(this).hasClass('anysearchIsOpen')) {
+                        $('#anysearch-input').focus();
+                        animateOpenSearchbox();
+                    } else {
+                        animateCloseSearchbox();
+                    }
+                });
+
+                // if search-input is focused --> bind search if press enter
+                $('#anysearch-input').keydown(function(e) {
+                    if (inputKeypressStartTime === null && e.which !== 13) {
+                        inputKeypressStartTime = new Date().getTime();
+                        options.startAnysearch();
+                    }
+                    if (e.which === 13) {
+                        var string = $(this).val();
+                        var now = new Date().getTime();
+                        if (checkIsBarcode(string, 1, inputKeypressStartTime, now)) {
+                            options.isBarcode(string);
+                        }
+                        inputKeypressStartTime = null;
+                        if (string.length >= 1) {
+                            if (doesAPatternMatch(string) === true && checkAmountKeypressedChars(string)) {
+                                doSearch(string);
+                                animateCloseSearchbox();
+                            }
+                        }
+                        options.stopAnysearch();
+                    }
+                });
+
+                // if focus #anysearch-input -> clearTimeout for closing
+                $('#anysearch-input').focus(function() {
+                    clearTimeout(timeout);
+                });
+            }
+        });
+    };
+})(jQuery);
+</script>
+
+
+        <script type="text/javascript">
+
+            $(document).ready(function() {
+
+                $('.alert, .hamburg, .berlin, .munich, .paris, .aba').hide();
+                var searchDbArr = new Array('munich', 'berlin', 'hamburg', 'paris', 'aba');
+
+                $(document).anysearch({
+                    minimumChars: 3,
+                    searchFunc: function(string) {
+                        searchInArray(string);
+                    },
+                    startAnysearch: function() {
+                        $('.alert').hide(300);
+                    },
+                    minimumCharsNotReached: function(string, stringLength, minLength) {
+                        var content = '<div class="msgresponse">Le mot sélectionné, (<b>' + string + '</b>) , doit contenir au minimum <b>' + minLength + '</b> lettres mais il en comporte seulement <b>' + stringLength + '</b> !</div>';
+                        $('.alert-danger').html(content).show(500);
+                    },
+                    isBarcode: function(barcode) {
+                        $('.alert-info').html('Barcode: <b>' + barcode + '</b> scanned.').show(500);
+                    }
+                });
+
+                function searchInArray(string) {
+                    if ($.inArray(string.toLowerCase(), searchDbArr) >= 0) {
+                        var content = null;
+
+                        if (string.toLowerCase() === 'munich') {
+                            content = '<div class="msgresponse">' + $('.munich').html() + '</div>';
+                        }
+                        if (string.toLowerCase() === 'berlin') {
+                            content = '<div class="msgresponse">' + $('.berlin').html() + '</div>';
+                        }
+                        if (string.toLowerCase() === 'hamburg') {
+                            content = '<div class="msgresponse">' + $('.hamburg').html() + '</div>';
+                        }
+                        if (string.toLowerCase() === 'paris') {
+                            content = '<div class="msgresponse">' + $('.paris').html() + '</div>';
+                        }
+                        if (string.toLowerCase() === 'aba') {
+                            content = '<div class="msgresponse">' + $('.aba').html() + '</div>';
+                        }
+                        $('.alert-success').html(content).show(500);
+
+                    } else {
+                        content = '<div class="msgresponse">Le terme ' + string + ' est introuvable, désolé !</div>';
+                        $('.alert-danger').html(content).show(500);
+                    }
+
+                }
+            });
+                </script>
+
+<div class="row mnplacetop">
+<p id="notice"><%= notice %></p>
+  <tbody>
+    <% @papers.each do |paper| %>
+      <tr>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-xs-6">
+            <h1><%= paper.name %>
+            </h1>
+            <p><%= paper.description %></p>
+          </div>
+        
+
+          <div class="col-lg-6 col-md-6 col-xs-6">
+          <a href="/users/sign_in">
+            <button class="btn btn-round btn-default" style="background-color: #00FE7E; border-width: 0; color: #000080">
+              Article précédent
+            </button>
+          </a>
+          </div>
+          </div>
+        <td><%= link_to 'Show', paper, :class => "btn btn-round btn-default greenbutton" %></td>
+        <td><%= link_to 'Edit', edit_paper_path(paper), :class => "btn btn-round btn-default greenbutton" %></td>
+        <td><%= link_to 'Destroy', paper, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-round btn-default greenbutton" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Paper', new_paper_path %>
+</div>
+<div class="container">
+            <div class="jumbotron hero-spacer">
+                <h1>Un mot ne vous semble pas clair ? Tapez le simplement avec votre clavier</h1>
+
+                <div class="alert alert-success" style="background-color: #226070">
+                </div>
+                <div class="alert alert-info">
+                </div>
+                <div class="alert alert-danger">
+                </div>
+            </div>
+
+            <div class="hamburg" style="display: none;">
+                Hamburg, officially Freie und Hansestadt Hamburg (Free and Hanseatic City of Hamburg), is the second largest city in Germany and the ninth largest city in the European Union.[4] It is also the thirteenth largest German state. It is home to over 1.8 million people, while the Hamburg Metropolitan Region (including parts of the neighbouring Federal States of Lower Saxony and Schleswig-Holstein) has more than 5 million inhabitants. On the river Elbe, the port of Hamburg is the second largest port in Europe (after the Port of Rotterdam) and tenth largest worldwide.
+            </div>
+            <div class="munich" style="display: none;">
+                Munich (German: München, Bavarian: Minga) is the capital and largest city of the German state of Bavaria. It is located on the River Isar north of the Bavarian Alps. Munich is the third largest city in Germany, behind Berlin and Hamburg. About 1.42 million people live within the city limits. Its inhabitants are sometimes called Munichers in English.
+            </div>
+            <div class="berlin" style="display: none;">
+                Berlin is the capital city of Germany and one of the 16 states of Germany. With a population of 3.3 million people, Berlin is Germany's largest city and is the second most populous city proper and the seventh most populous urban area in the European Union. Located in northeastern Germany on the River Spree, it is the center of the Berlin-Brandenburg Metropolitan Region, which has about 4½ million residents from over 180 nations. Due to its location in the European Plain, Berlin is influenced by a temperate seasonal climate. Around one third of the city's area is composed of forests, parks, gardens, rivers and lakes.
+            </div>
+            <div class="paris" style="display: none;">
+                paris paris paris
+            </div>
+            <div class="aba" style="display: none">
+                    <div class="tim-title">
+                        <h2>Définir l'ABA</h2>
+                        <p>Voici la définition proposée par le site "ABA : principes et application" : <a class="btn btn-click btn-lg btn-info btn-success tvertf" href="http://www.aba-sd.info" onclick="window.open(this.href); return false;" role="button">site d'Olivier Bourgueil</a></p>
+                    </div>
+                            <h2 class="tvertf" style="text-align: center">
+                              De façon simple
+                            </h2>
+                            <p>L'ABA c'est l'application de principes et lois scientifiques afin de <b>créer ou modifier</b> des comportements qui revêtent une importance sociale pour la personne et la société.</p>
+                            <p>L'ABA ne s'applique pas qu'à l'autisme ! Il existe des professionnels spécialisés en ABA (mais encore très peu en France) qui aident des patients atteints de nombreuses pathologies (ex : addictions - TOC - dépression - schizophrénie etc.) ou des professionnels qui ne s'occupent pas directement de "pathologies" mais qui fournissent des aides pour la vie quotidienne (ex : gestion des comportements alimentaires - thérapies de couples ou familiales etc.). </p>
+                            <p>L'ABA n'est pas non plus une "méthode" miracle ou innovante, ce n'est d'ailleurs pas du tout une "méthode" : c'est plutôt un cadre théorique et pratique qui oriente les professionnels dans leurs actions afin d'aider les patients. L'ABA existe depuis de nombreuses années mais ce n'est que récemment que les médias ont découvert son existence. </p>
+                            <p>Les lettres A.B.A viennent de l'anglais "Applied Behavior Analysis", ce qui se traduit en français par différents termes : Analyse appliquée du comportement, Analyse comportementale appliquée, analyse du comportement appliquée etc.</p>
+                          <h2 class="tvertf " style="text-align: center">
+                              Définition plus complexe
+                          </h2>
+                            <p>Une bonne définition de l'ABA, mais un peu plus compliquée, est celle de Baer, Wolf et Risley (1968) :</p> <p>"l'ABA est le processus d'application des principes du comportement à l'amélioration de comportements spécifiques et consiste simultanément à évaluer si les changements observés sont attribuables au processus d'application, et si oui, à quelle partie de ce processus." </p>
+                  <h2 class="tvertf " style="text-align: center">
+                      Un peu d'histoire
+                  </h2>
+                  <p>L'analyse du comportement est la science qui étudie les comportements des organismes. Cette science est née au début du 20ème siècle et on considère que c'est John B. Watson qui a initié le changement de cap de la psychologie de l'époque, qui s'occupait alors quasiment exclusivement des 'états de conscience', des 'images mentales' et autres processus mentaux.</p>
+                  <p>Selon Watson (1913) : "Les objectifs [de la psychologie] sont la prédiction et le contrôle du comportement". Ici, Watson place bien la psychologie comme une science, qui doit être capable de donner des prédictions quant à l'apparition ou pas de certains phénomènes (ici des comportements) et qui de plus doit être capable de les contrôler.</p>
+                  <p>Une des branches de l'analyse du comportement est l'analyse expérimentale du comportement qui, pour simplifier, consiste en la recherche et la mise en évidence, en laboratoire des principes guidant l'apparition des comportements des organismes.</p>
+                  <h2 class="tvertf " style="text-align: center">
+                      Donc en fin de compte
+                  </h2>
+                    <p>L'analyse du comportement appliquée est la branche de l'analyse du comportement qui se préoccupe de la façon d'utiliser (d'appliquer) auprès de sujets humains les résultats obtenus en laboratoire, afin de comprendre et de modifier les comportements humains qui revêtent une importance sociale.</p>
+      </br>
+                              <span class="label label-info">En savoir plus :</span>
+                              <a class="btn btn-block btn-click btn-success" href="http://www.aba-sd.info/aba-autisme/outils-devaluation" onclick="window.open(this.href); return false;" role="button">Les outils d'évaluation</a>
+                              <a class="btn btn-block btn-click btn-success" href="http://www.aba-sd.info/aba-autisme/pratiques-guidees-par-laba" onclick="window.open(this.href); return false;" role="button">Modèles d'intervention</a>
+                              <a class="btn btn-block btn-click btn-success" href="http://www.aba-sd.info/aba-autisme/communication" onclick="window.open(this.href); return false;" role="button">Communication</a>
+                              <a class="btn btn-block btn-click btn-success" href="http://www.aba-sd.info/aba-autisme/comprehension-de-lenvironnement" onclick="window.open(this.href); return false;" role="button">Compréhension de l'environnement</a>
+                              <a class="btn btn-block btn-click btn-success" href="http://www.aba-sd.info/aba-autisme/comportements-repetitifs" onclick="window.open(this.href); return false;" role="button">Comportements répétitifs</a>
+                              <a class="btn btn-block btn-click btn-success" href="http://www.aba-sd.info/aba-autisme/comportements-sociaux" onclick="window.open(this.href); return false;" role="button">Comportements sociaux</a>
+            </div>
+
+        </div>
 <table>
   <thead>
     <tr>

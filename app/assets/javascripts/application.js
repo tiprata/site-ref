@@ -10,10 +10,34 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require webcomponentsjs/webcomponents-lite
 //= require jquery
 //= require jquery_ujs
+//= require gsdk
 //= require turbolinks
 //= require underscore
 //= require gmaps/google
-//= require bootstrap.min
 //= require_tree .
+
+var diag = document.getElementById("diag");
+var ktree3 = document.getElementById("dieg");
+var three = document.getElementById("three");
+if (diag)
+{
+    diag.addEventListener("click", function (){
+    document.querySelector('parkour-selector').showParkour('parkour-diagnostiqu');
+  });
+}
+
+if (ktree3)
+{
+  ktree3.addEventListener("click", function (){
+    document.querySelector('parkour-selector').showParkour('parkour-diagnostique');
+  });
+}
+if (three)
+{
+  three.addEventListener("click", function (){
+    document.querySelector('parkour-selector').showParkour('template-trois-parkour');
+  });
+}

@@ -1,0 +1,476 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+html {
+    width: 100%;
+}
+html body  a:focus {
+    color: transparent;
+}
+html .navbar-toggle {
+    background-color: #226070;
+    color: #00ff97;
+}
+
+
+.titlerighpath {
+    font-size: 5vw;
+    position: absolute;
+    top: 57vw;  
+    right: 16%;
+    z-index: 1;
+    font-family: serif;
+    color:#fff;
+    text-align: right;
+}
+.titleleftpath {
+    font-size: 5vw;
+    position: absolute;
+    top: 114vw;  
+    left: 10%;
+    z-index: 1;
+    font-family: serif;
+    color:#fff;
+    text-align: left;
+}
+.titleleftktree {
+    font-size: 5vw;
+    position: absolute;
+    top: 18vw;  
+    left: 10%;
+    z-index: 1;
+    font-family: serif;
+    text-align: left;
+    
+}
+.placerightpark1
+{
+    top: 72vw;
+}
+.placerightpark2
+{
+    top: 80vw;
+}
+.placerightpark3
+{
+    top: 82vw;
+}
+.placerightpark4
+{
+    top: 87vw;
+}
+
+.placeleftpark1
+{
+    color: white;
+    top: 132vw;
+}
+.placeleftpark2
+{
+    color: white;
+    top: 140vw;
+}
+.placeleftpark3
+{
+    color: white;
+    top: 142vw;
+}
+.placeleftpark4
+{
+    color: white;
+    top: 144vw;
+}
+.placeleftpark5
+{
+    color: white;
+    top: 146vw;
+}
+.placeleftpark6
+{
+    color: white;
+    top: 148vw;
+}
+.textwelcright {
+    font-size: 1.3vw;
+    padding-left: 45vw;
+    position: absolute;
+    right: 2%;
+    z-index: 1;
+    font-family: serif;
+
+    width: 100%;
+    text-align: left;
+    margin-right: 5px;
+    letter-spacing: 1.4px;
+    line-height: 130%;
+
+}
+.textwelcktreeleft {
+    font-size: 1.3vw;
+    top: 40vw;
+    padding-right: 45vw;
+    padding-left: 5vw;
+    position: absolute;
+    right: 2%;
+    z-index: 1;
+    font-family: serif;
+
+    width: 100%;
+    text-align: left;
+    margin-right: 5px;
+    letter-spacing: 1.4px;
+    line-height: 130%;
+
+}
+.textwelcleft {
+    font-size: 1.3vw;
+    padding-right: 45vw;
+    padding-left: 5vw;
+    position: absolute;
+    right: 2%;
+    z-index: 1;
+    font-family: serif;
+
+    width: 100%;
+    text-align: left;
+    margin-right: 5px;
+    letter-spacing: 1.4px;
+    line-height: 130%;
+
+}
+@media (max-width: 789px)
+{
+    .placeleftpark1
+    {
+        color: white;
+        top: 132vw;
+    }
+    .placeleftpark2
+    {
+        color: white;
+        top: 141vw;
+    }
+    .placeleftpark3
+    {
+        color: white;
+        top: 146vw;
+    }
+    .placeleftpark4
+    {
+        color: white;
+        top: 151vw;
+    }
+    .placeleftpark5
+    {
+        color: white;
+        top: 154vw;
+    }
+    .placeleftpark6
+    {
+        color: white;
+        top: 157vw;
+    }
+    .titleleftpath {
+        font-size: 5vw;
+        position: absolute;
+        top: 114vw;  
+        left: 10%;
+        z-index: 1;
+        font-family: serif;
+        color:#fff;
+        text-align: left;
+    }
+    .textwelcleft {
+        font-size: 2vw;
+        padding-right: 45vw;
+        padding-left: 5vw;
+        position: absolute;
+        right: 2%;
+        z-index: 1;
+        font-family: serif;
+        width: 100%;
+        text-align: left;
+        margin-right: 5px;
+        letter-spacing: 1.4px;
+        line-height: 130%;
+    }
+}
+@media (max-width: 789px)
+{
+.titlerighpath {
+    font-size: 5vw;
+    position: absolute;
+    top: 58vw;  
+    right: 14%;
+    z-index: 1;
+    font-family: serif;
+    color:#fff;
+    text-align: right;
+}
+    .placerightpark1
+    {
+        top: 76vw;
+    }
+    .placerightpark2
+    {
+        top: 88vw;
+    }
+    .placerightpark3
+    {
+        top: 93vw;
+    }
+    .placerightpark4
+    {
+        top: 99vw;
+    }
+    .textwelcright {
+    font-size: 2vw;
+    position: absolute;
+    right: 2%;
+    padding-left: 5vw;
+    z-index: 1;
+    font-family: serif;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    margin-right: 5px;
+    letter-spacing: 1px;
+    line-height: 130%;
+    }
+}
+@media (max-width: 750px)
+{
+    html .navbar-toggle {
+        margin-right: 10%;
+        background-color: #226070;
+        color: #00ff97;
+    }
+    .mpagetext {
+        width: 105%;
+        height: 100%;
+    }
+}
+@media (min-width: 750px)
+{
+    .mpagetext {
+        width: 101%;
+        height: 100%;
+    }
+}
+@media (max-width: 1000px)
+{
+    .navbar-transparent .navbar-nav > .active > a, .navbar-transparent .navbar-nav > .active > a:hover, .navbar-transparent .navbar-nav > .active > a:focus, .navbar-transparent .navbar-nav > li > a:hover, .navbar-transparent .navbar-nav > li > a:focus, [class*="navbar-ct"] .navbar-nav > .active > a, [class*="navbar-ct"] .navbar-nav > .active > a:hover, [class*="navbar-ct"] .navbar-nav > .active > a:focus, [class*="navbar-ct"] .navbar-nav > li > a:hover, [class*="navbar-ct"] .navbar-nav > li > a:focus 
+    {
+        color: #00ff97;
+        background-color: #226070;
+        border-radius: 15px;
+        border-height: 20px;
+        border-style: solid;
+        border-color: #00ff97;
+    }
+}
+@media (max-width: 767px)
+{
+    #bs-example-navbar-collapse-app {
+    background-color: #226070;    
+    }
+.navbar-transparent .navbar-nav > container > navbar-collapse{
+    background-color: #226070;
+}
+    
+}
+
+@media (min-width: 1200px)
+{
+    .container {
+        width: 100%;
+    }
+    .menutext{
+        font-size: 2em;
+        border-radius: 2em;
+    }
+    .menutext:hover{
+        font-size: 2em;
+        color: #00FE7E;
+        border-radius: 2em;
+    }
+    div a.glyphimaplink {  
+        color: white;
+        margin-left: 40%;
+        margin-right: 30px;
+        margin-top: 18%;
+        text-align: left;
+        border-width: 0;
+    }
+}
+
+.glyphimaplink {
+    margin-left: 90%;
+    
+    border-width: 0;
+}
+.textmap {
+    margin-left: 40%;
+    margin-top: 20%;
+    
+    font-size: 30px;
+    
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+div a.logox:hover {
+    background-color: transparent;
+    text-decoration: none;
+    outline: none;
+}
+.sout {
+    background-color: white !important;
+    border-color: #00ff97 !important;
+    border-width: 2px !important;
+    color: #000080 !important;
+}
+
+.hitch {
+    padding-left: 2em;
+    font-size: 2em;
+    border-radius: 3em;
+    height: 11em;
+    
+    color: #000080;
+    background-color: #226070;
+}
+div a span.glyphicon-map-marker {
+    font-size: 32vh;
+    color: #00ff97;
+    
+}
+
+div a span.glyphicon.glyphicon-map-marker:hover {
+    color: white;
+}
+#navbar .navbar-ct-green
+{
+    max-height: 30%;
+    background-color: #226070;
+}
+#navbar .navbar-transparent
+{
+    background-color: transparent;
+}
+div .hitchbutton {
+    outline: none;
+    width: 12vh;
+    height: 12vh;
+    margin-top: 2vh;
+    margin-bottom: 15px;
+    border-radius: 15vh !important; 
+    background-color: white;
+    vertical-align: 5.5vh;
+    border-color: white;
+    border-style: solid;
+}
+.hitchbuttontwo {
+    margin-top: 2vh;
+    vertical-align: 3vh;
+    margin-left: 25px;
+    outline: none;
+    width: 12vh;
+    height: 12vh; 
+    margin-bottom: 15px;
+    border-radius: 15vh !important; 
+    background-color: #226070;
+    border-width: 3vh;
+    border-color: white;
+    border-style: solid;
+}
+.hitchbuttonthree {
+    margin-top: 2vh;
+    margin-left: 25px;
+    vertical-align: 5vh;
+    outline: none;
+    width: 12vh;
+    height: 12vh; 
+    border-radius: 15vh !important; 
+    background-color: #226070;
+    border-width: 1vh;
+    border-color: white;
+    border-style: solid;
+}
+.hitchtext {
+    padding-top: 12vh;
+    font-size: 20px;
+}
+.hitchtexttwo {
+    padding-top: 12vh;
+    font-size: 20px;
+}
+.hitchtextthree {
+    padding-top: 12vh;
+    font-size: 20px;
+}
+.dboard {
+    padding-top: 10em !important;
+}
+
+
+
+
+
+@media (min-width: 750px)
+{
+    .logox {
+    display: none;
+    }
+}
+@media (max-width: 750px)
+{
+    .logox {
+    padding: 20px;
+    text-align: center;
+    }
+    .logox1 {
+    display: none;
+    }
+}
+.navbar-nav > li > a {
+    color: white;
+}
+.navbar-transparent .navbar-nav > li .border { /* Couleurs barre de navigation         */
+    background-color: #226070;
+    border-radius: 20px;
+}
+
+.navbar-transparent .navbar-nav > li > a {
+    color: #00ff97;
+}
+.p0 {
+   padding: 0; 
+}
+.navbar-transparent .navbar-nav > li > a:hover {
+    color: #00ff97;
+    
+}
+html li a.navtext {
+  font-size: 17px;
+  letter-spacing: 1px;
+  line-height: 20px;
+}
+
+ul.nav.navbar-nav
+{
+  width: 100%;
+  padding: 0;
+}
+
+#bs-example-navbar-collapse-app {
+  width: 100%;
+}

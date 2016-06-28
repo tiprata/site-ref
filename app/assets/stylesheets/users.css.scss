@@ -1,3 +1,32 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@media (max-width: 1200px)
+{
+    #grd {
+    padding-left: 22%;
+    padding-top: 14%;
+    border-radius: 10px;
+    background-color: #226070;
+
+    }
+}
+
+@media (min-width: 1200px)
+{
+    #grd {
+        padding-left: 22%;
+        padding-top: 14%;
+    }
+}
+
+@media (max-width: 120px)
+{
+    #bs-example-navbar-collapse-app {
+        width: 120%;
+    }
+}
+#bs-example-navbar-collapse-app {
+    
+}
+
