@@ -1,3 +1,20 @@
+<script src="//maps.google.com/maps/api/js?v=3.23&sensor=false&client=&key=&libraries=geometry&language=&hl=&region=" type='text/javascript'></script>
+<script src="//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js" type='text/javascript'></script>
+<script src='//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js' type='text/javascript'></script>
+
+<div height="162px" width="100%"></div>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<div style="width: 100%; height: 75%">
+  <iframe src="https://www.google.com/maps/d/embed?mid=1ZwYqBbuGBVi8n6Ks4q75QIUiwIs" style="width: 100%; height: 100%"></iframe>
+</div>
+
 <h1>Listing structures</h1>
 
 <table>
@@ -42,10 +59,10 @@
           <td><%= structure.reply %></td>
           <td><%= structure.user ? structure.user.email : "" %></td>
           <td><%= structure.admin ? structure.admin.email : "" %></td>
-          <td><%= structure.approved == 1 ? "accepted" : (structure.approved == "2" ? "refused" : "pending") %></td>
+          <td><%= structure.approved == 1 ? "accepted" : "pending" %></td>
           <td><%= link_to 'Show', structure %></td>
           <% if user_signed_in? %>
-            <% if current_user.is_admin? || (current_user == structure.user && structure.approved == 0) %>
+            <% if current_user.is_admin? || (current_user == structure.user && structure.approved != 1) %>
               <td><%= link_to 'Edit', edit_structure_path(structure) %></td>
             <% end %>
             <% if current_user.is_admin? || current_user == structure.user %>
@@ -60,9 +77,9 @@
 
 <br />
 
-<div style='width: 800px;'>
-  <div id="map" style='width: 800px; height: 400px;'></div>
-</div>
+<!--<div style='width: 800px;'>-->
+<!--  <div id="map" style='width: 800px; height: 400px;'></div>-->
+<!--</div>-->
 
 <br />
 
@@ -88,8 +105,12 @@
 
 <br />
 
+<<<<<<< HEAD
 <%= link_to 'New Structure', new_structure_path %>
 
-<div>
-  <iframe src="https://www.google.com/maps/d/embed?mid=1ZwYqBbuGBVi8n6Ks4q75QIUiwIs" width="100%" height="480"></iframe>
-</div>
+
+=======
+<% if user_signed_in? %>
+  <%= link_to 'New Structure', new_structure_path %>
+<% end %>
+>>>>>>> b71f42b183f592de005da7473baada7f50a17b6a

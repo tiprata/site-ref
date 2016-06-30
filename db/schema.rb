@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160619154613) do
+ActiveRecord::Schema.define(version: 20160629235213) do
 
   create_table "departements", force: :cascade do |t|
     t.string   "name"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20160619154613) do
     t.text     "reply"
     t.integer  "user_id"
     t.integer  "admin_id"
-    t.integer  "approved"
+    t.boolean  "approved"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20160619154613) do
     t.text     "reply"
     t.integer  "user_id"
     t.integer  "admin_id"
-    t.integer  "approved"
+    t.boolean  "approved"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 20160619154613) do
     t.text     "reply"
     t.integer  "user_id"
     t.integer  "admin_id"
-    t.integer  "approved"
+    t.boolean  "approved"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 20160619154613) do
   create_table "users", force: :cascade do |t|
     t.boolean  "is_admin"
     t.string   "link"
-    t.integer  "gender"
+    t.boolean  "gender"
     t.date     "birthdate"
     t.date     "begin"
     t.date     "end"
@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(version: 20160619154613) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.text     "elacombe"
   end
 
   add_index "users", ["departement_id"], name: "index_users_on_departement_id"
