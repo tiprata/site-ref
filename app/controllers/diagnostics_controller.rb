@@ -5,6 +5,7 @@ class DiagnosticsController < ApplicationController
   # GET /diagnostics.json
   def index
     @diagnostics = Diagnostic.all
+    render :layout => '_base'
   end
 
   # GET /diagnostics/1

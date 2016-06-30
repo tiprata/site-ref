@@ -20,8 +20,19 @@
 //= require_tree .
 
 var diag = document.getElementById("diag");
-var ktree3 = document.getElementById("dieg");
+var retourKtree = document.getElementById("retourKtree");
 var three = document.getElementById("three");
+var retourParkour = document.getElementById("retourParkour");
+if (!diag)
+{
+console.log("doek");
+}
+if (retourParkour)
+{
+      retourParkour.addEventListener("click", function (){
+        document.querySelector('parkour-selector').showParkour('parkour-selector');
+    });
+}
 if (diag)
 {
     diag.addEventListener("click", function (){
@@ -29,10 +40,11 @@ if (diag)
   });
 }
 
-if (ktree3)
+if (retourKtree)
 {
-  ktree3.addEventListener("click", function (){
-    document.querySelector('parkour-selector').showParkour('parkour-diagnostique');
+  retourKtree.addEventListener("click", function (){
+    console.log("coucou");
+    document.querySelector('ktree-selector').showKtree('ktree-selector');
   });
 }
 if (three)
@@ -41,3 +53,4 @@ if (three)
     document.querySelector('parkour-selector').showParkour('template-trois-parkour');
   });
 }
+                    

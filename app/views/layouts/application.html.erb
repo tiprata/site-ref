@@ -62,7 +62,7 @@
                 <% end %>
             </ul>
                       <ul class="nav navbar-nav">
-                  <% if current_user.is_admin? %>
+                  <% if user_signed_in? && current_user.is_admin? %>
                   <li><%= link_to('User', users_path) %></li>
                   <li class="col-lg-3 col-md-3 col-xs-6 p0 text-center"><%= link_to('Liste des langages', languages_path, :class => "navtext") %></li>
                   <li class="col-lg-3 col-md-3 col-xs-6 p0 text-center"><%= link_to('Type d\'établissement', juridicals_path, :class => "navtext") %></li>

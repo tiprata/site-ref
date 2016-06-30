@@ -1,7 +1,39 @@
-<h1>Listing diagnostics</h1>
+<style>
+html body {
+  background-color:#226070;
+}
+</style>
+
+<!--<div class="row" style="padding-top: 30%;">
+      <section class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6" style="text-align: left">
+          <a><button id="diagprecoce" style="width: 60%; height: 40px; background-color: #226070; color: #00ff97; border-radius: 15px">
+          Les interventions globales et coordonneées
+          </button></a>
+        </div>
+      </section>
+</div>-->
+<div class="row">
+<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6" style="top: 10vw">
+<parkour-selector></parkour-selector>
+</div>
+</br></br></br></br>
+<div class="sizetxt pull-right scrollbar pre-scrollable col-lg-6 col-md-6 col-xs-6 col-sm-6" style="padding: 25px;right: 6vw;border-radius: 40px ;width: 30vw; height: 50vw; background-color: #226070; border: 2px solid #00ff97" id="parktext">
+</div>
+<div class="row " style="margin-left: 60%; padding-top: 30%;"><!-- 990-->
+      <section class=" col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6" style="text-align: left; left: 20%; top: 50%">
+          <div id="parkbouton"></div>
+          <a><button id="retourParkour" style="width: 100%; height: 40px; background-color: #00ff97; color: #226070; border-radius: 15px">
+          Revenir aux parcours
+          </button></a>
+        </div>
+      </section>
+</div>
+</div>
 
 <table>
-  <thead>
+  <!--<thead>
     <tr>
       <th>Name</th>
       <th>Description</th>
@@ -12,7 +44,7 @@
       <th>Departement</th>
       <th colspan="3"></th>
     </tr>
-  </thead>
+  </thead>-->
 
   <tbody>
     <% if user_signed_in? && current_user.is_admin? %>
@@ -39,3 +71,4 @@
     <% end %>
   </tbody>
 </table>
+

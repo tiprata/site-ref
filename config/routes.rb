@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'parcourfirst/parcourfirst'
+
   get 'ktree/index'
 
   get 'welcome/index' => 'welcome#index'

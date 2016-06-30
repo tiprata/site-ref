@@ -222,7 +222,7 @@
                             },
                             {
                                 name: "Troubles du sommeil",
-                                presentation: '',
+                                presentation: '<small class="subtitle">(HAS,Paragraphe 3.3.5, p.38)</small><p>Les troubles du sommeil constituent une des plaintes les plus fréquemment rapportées par les familles d’enfants avec autisme. Ainsi, la prévalence des troubles du sommeil chez les enfants avec autisme va de 45 % à 86 % selon les études (75-78), et ceci même chez les enfants avec autisme non déficitaires (75,78-80). Les parents décrivent avant tout une insomnie, avec difficulté d’endormissement, du maintien de sommeil et aussi une plus courte durée de sommeil (79,81-85). L’étude récente de Krakowiak et al. suggère que l’endormissement et les réveils nocturnes seraient les deux domaines de sommeil les plus atteints dans le groupe des enfants ayant un TSA (78).</p><p>La plupart des études ont utilisé des mesures subjectives parentales sur la base d’agendas de sommeil ou de questionnaires pour évaluer le sommeil des enfants avec autisme. Les travaux, peu nombreux, ayant réalisé une évaluation objective du sommeil à l’aide d’une polysomnographie ont confirmé les plaintes de parents. Dans ces études, il a été rapporté : une latence d’endormissement allongée, un temps total de sommeil diminué et un temps d’éveil intrasommeil augmenté, les autres anomalies observées étant plus hétérogènes (86- 89).</p><p>L’analyse de la relation entre trouble du sommeil et symptomatologie clinique de l’autisme (incluant les troubles du comportement) a été rarement rapportée. Elia et al. (86) ont observé une corrélation entre la communication non verbale, la réponse visuelle et le temps total de sommeil et les éveils nocturnes, confirmée par Limoges et al. (corrélation négative entre le temps total de sommeil et les scores d’interactions sociales et de communication sur l’ADI-R) (87). Malow et al. distinguent des enfants avec autisme “ bons dormeurs ” et “ mauvais dormeurs ”, les premiers souffrant moins de problèmes affectifs et ayant une meilleure interaction sociale (88).</p><p>Parallèlement aux études sur le sommeil, il a été recherché des troubles des rythmes circadiens chez des enfants avec autisme, en se basant sur la plainte parentale de rythmes veille-sommeil irréguliers chez leur enfant (83,90). Des anomalies de sécrétion de la mélatonine ont été mis en évidence chez des enfants avec autisme (91-94). </p>',
                                 pos: [11, 14],
                             },
                             {
@@ -242,12 +242,12 @@
                             },
                             {
                                 name: "Déficience visuelle",
-                                presentation: '',
+                                presentation: '<small class="subtitle">(HAS,Paragraphe 3.3.7, p.39)</small><p>La prévalence d’une déficience visuelle chez les personnes avec autisme est évaluée entre 0 et 11,1 % (médiane : 1,3 %) à partir d’une revue systématique fondée sur 5 études (16). La prévalence des troubles autistiques chez les enfants ayant une déficience visuelle a fait l’objet d’une revue non systématique (96). Les résultats des études sont contradictoires allant de 0 à 53,3 % pour l’ensemble autisme et traits autistiques (97,98). Ces différences peuvent être interprétées en fonction de la méthode d’étude, de la taille des groupes, du degré de sévérité de la déficience, des causes de la déficience et des troubles associés. Dans une étude plus récente (99), la prévalence de l’autisme dans une population de 257 enfants et adolescents en institution turque pour déficients visuels de toute cause était de 11,6 % (30/257) avec des différences liées à la fois à la gravité de la déficience visuelle (p = 0,015) et à l’existence de troubles associés en particulier les troubles neurologiques (p = 0,024) et la déficience intellectuelle (p = 0,001). Des études complémentaires sont nécessaires du fait du manque d’adaptation des outils actuels d’évaluation.</p>',
                                 pos: [11, 14],
                             },
                             {
                                 name: "Déficience auditive",
-                                presentation: '',
+                                presentation: '<small class="subtitle">(HAS,Paragraphe 3.3.7, p.40)</small><p>La prévalence d’une déficience auditive dans une série de 199 enfants avec autisme était de 9,5 % (19/199) dont 3,5 % de déficience profonde (7/199) (100).</p><p>La prévalence de l’autisme dans une population de 1 150 enfants ayant une déficience auditive était de 4 % (46/1 150) (101). </p>',
                                 pos: [11, 14],
                             },
                             {
@@ -304,7 +304,7 @@
                         return [
                             //[parent, child, mode]
                             [
-                                "Les interventions globales et coordonnées", "Les programmes d’interventions personnalisés, globaux et coordonnés", 0
+                                "Comorbidités et troubles associés", "Comorbidités", 0
                             ],
                         ]
                     }

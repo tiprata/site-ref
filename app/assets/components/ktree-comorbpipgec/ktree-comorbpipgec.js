@@ -1,5 +1,5 @@
         Polymer({
-            is: "parkour-diagnostiqu",
+            is: "ktree-comorbidite",
             properties: {
                 steps: {
                     type: Array,
@@ -9,6 +9,7 @@
                                 name: "Les interventions globales et coordonnées",
                                 presentation: '<p>Cette partie (exceptés les points 3 et 4) est issue des recommandations de bonnes pratiques professionnelles publiées par la HAS et l’ANESM en mars 2012 : Autisme et autres troubles envahissants du développement : interventions éducatives et thérapeutiques coordonnées chez l’enfant et l’adolescent. Cette délimitation du thème ne signifie en aucun cas que les interventions proposées aux personnes avec TSA s’arrêtent au passage à l’âge adulte. Les recommandations de bonnes pratiques professionnelles pour les adultes sont en cours de rédaction, et leurs préconisations devront être prises en compte dès leur parution. Dans l’attente de leur publication, il est conseillé de se référer, pour les adultes, aux interventions recommandées pour les enfants en 2012.</p><p>Les interventions évoquées dans les recommandations conjointes HAS-ANESM de 2012 recouvrent les actions directes auprès de la personne avec TSA, mais également les actions indirectes avec et sur leur environnement.</p><p><b>Elles visent à favoriser notamment le développement du fonctionnement de la personne et l’acquisition de comportements adaptés dans plusieurs domaines</b> (sensoriel et moteur, communication et langage, interactions sociales, cognitif, émotionnel et aff ectif) ainsi que sa participation sociale, y compris scolaire et professionnelle, son autonomie, son indépendance, ses apprentissages et ses compétences adaptives. Leur objectif est également de réduire les obstacles environnementaux qui accentuent sa situation de handicap et de concourir à son bien-être et à son épanouissement personnel.</p><div class="bgvertf">Il est important de rappeler en préalable, comme c’est le cas dans les recommandations de 2012, que : <ul><li>les interventions proposées doivent <b>respecter la singularité de la personne</b> et de sa famille et tenir compte de leurs priorités </li><li><b>aucune approche éducative ou thérapeutique ne peut prétendre restaurer un fonctionnement normal ou améliorer le fonctionnement et la participation de la totalité des personnes avec TSA.</b> Les recommandations rappellent en effet que : « Les interventions évaluées mettent en évidence une amélioration du quotient intellectuel, des habiletés de communication, du langage, des comportements adaptatifs ou une diminution des comportements problèmes pour environ 50 % des enfants avec TED, avec ou sans retard mental. » Il est donc recommandé d’être particulièrement prudent vis-à-vis d’interventions présentées soit comme permettant de supprimer complètement les manifestations des troubles, voire de guérir totalement les personnes, soit comme exigeant l’exclusivité de l’accompagnement</li><li><b>l’intensité et le contenu des interventions doivent, quel que soit l’âge, être fixés en fonction de considérations éthiques visant à limiter les risques de sous-stimulations ou, au contraire, de surstimulations.</b></li></ul></div><p>Enfin, il convient de souligner, à l’instar des recommandations de 2012, tout l’intérêt d’impliquer les parents, notamment en leur permettant de participer à des séances éducatives et thérapeutiques, à un accompagnement, une formation ou un programme d’éducation thérapeutique, dans l’optique notamment d’assurer la cohérence des modes d’interactions avec leur enfant et la généralisation des acquis .</p><p>Les interventions décrites ici sont présentées de la façon suivante :</p><ul><li> tout d’abord, les interventions personnalisées, globales et coordonnées recommandées par l’ANESM et la HAS</li><li>puis les interventions par domaine fonctionnel, extraites des recommandations de la HAS et de l’ANESM</li><li>enfin, les autres interventions existantes, jugées non recommandées ou non consensuelles par l’ANESM et la HAS.</li></ul><div class="bgvertf">Les interventions à prendre en compte par les MDPH et leurs partenaires sont celles ayant fait l’objet d’une validation scientifique ou d’un consensus d’experts (interventions recommandées actuellement). Néanmoins, il convient de préciser l’évolution possible des interventions : de nouvelles méthodes pourront se développer au cours du temps, certaines interventions actuellement non recommandées pourront être validées scientifiquement, faire l’objet d’un consensus… Ce contexte est donc susceptible de modifier le positionnement des professionnels et la prise en compte des interventions à proposer et à recommander</div>',
                                 pos: [8, 14],
+                                enfant: "ktree-selector",
                                 par: 1
                             },
                             {
@@ -237,73 +238,50 @@
                 }
             },
 
-            width: window.innerWidth * 1 / 2,
+            width: window.innerWidth * 3 / 5,
             height: null,
+            nodeColorNeutral: "#46464c",
+            nodeColorSuccess: "#00ff97",
+            nodeColorFail: "red",
+            strokeColorNeutral: "#46464c",
+            strokeColorSuccess: "#00ff97",
+            strokeColorFail: "red",
+            strokeColorCurrent: "#00babc",
+            linkColorNeutral: "white",
+            linkColorSuccess: "white",
+            linkColorFail: "red",
+            keychain: [],
+            matchChain: [],
 
             addNode: function(obj, coeff, layer, i) {
                 var node = new Konva.Circle({
-                    name: (obj.par === 0) ? 'n' : 'y',
                     x: obj.pos[0] * coeff,
                     y: obj.pos[1] * coeff,
                     radius: coeff / 2,
-                    fill: (obj.par === 0) ? "#268e7b" : "#00ff97",
-                    stroke: "#226070",
+                    fill: "#46464c",
+                    stroke: "#00ff97",
                     id: obj.name,
-                    strokeWidth: coeff / 12,
+                    text: obj.name,
+                    strokeWidth: coeff / 12
                 });
                 layer.add(node);
-                node.on('touchstart click', function () {
-                    var pars;
-                    var circ;
-                    var res = [];
-                    var tab1 = layer.find('Line');
-                    var tab2 = layer.find('Circle');
-                    var line;
-                    for (var i = 0; i < tab1.length; i++) {
-                        line = tab1[i];
-                        pars = line.attrs.text.match(/\d+/g);
-                        if (parseInt(pars[0]) == node._id) {
-                            for (var j = 0; j != tab2.length; j++) {
-                                if (tab2[j]._id == parseInt(pars[1])) {
-                                    circ = tab2[j];
-                                }
-                            }
-                            res.push(line);
-                            res.push(circ);
-                        }
-                    }
-                    for (var i = 0; i < res.length; i++) {
-                        console.log(res[i].name);
-                        if (res[i].name() === 'y') {
-                            return ;
-                        }
-                    }
-                    for (var i = 0; i < res.length; i++) {
-                        res[i].visible(!(res[i].visible()));
-                        node.name((circ.visible() === true) ? 'y' : 'n');
-                    }
-                    layer.draw();
-                });
-                node.on('mouseover', function () {
-                    var rad = node.radius();
-                    node.radius(rad + 5);
-                    layer.draw();
-                    document.getElementById("igcoord").innerHTML = '<div><h2 class="kledge" style="font-family: Impact, Charcoal, sans-serif">'+obj.name+'</h2>'+ '<div class="kledge">' +obj.presentation + '</div></div>';
-                    document.body.style.cursor = 'pointer';
-                });
-                node.on('touchstart', function () {
-                    document.getElementById("igcoord").innerHTML = '<h2 style="font-family: serif">'+obj.name+'</h2>'+obj.presentation;
-                    document.body.style.cursor = 'pointer';
-                });
-                node.on('mouseleave', function () {
-                    var rad = node.radius();
-                    node.radius(rad - 5);
-                    layer.draw();
-                    document.body.style.cursor = 'default';
-                });
+                    node.on('click', function () {
+                        document.getElementById("ktreetext").innerHTML = "<h2 style=\"color: #00ff97\">" + obj.name + ": </h2><div style=\"color: #00ff97\">" + obj.presentation + "</div><br/>" + obj.description;
+                        document.getElementById("ktreebouton").innerHTML = "<a><button style=\"width: 100%; height: 40px; background-color: #00ff97; color: #226070; border-radius: 15px\" onClick=\"document.querySelector('ktree-selector').showKtree('" + obj.enfant + "')\">En savoir plus</button></a>";
+                        });
+                    node.on('mouseover', function () {
+                        this.opacity(0.5);
+                        document.body.style.cursor = 'pointer';
+                        layer.draw();
+                    });
+                    node.on('mouseleave', function () {
+                        this.opacity(1);
+                        document.body.style.cursor = 'default';
+                        layer.draw();
+                    });
             },
 
-            addConnect: function (connect, layer, coeff) {
+            addConnect: function (connect, layer, i, coeff) {
                 var node1 = layer._getNodeById(connect[0]);
                 var node2 = layer._getNodeById(connect[1]);
                 var x1, y1, x2, y2, h;
@@ -313,9 +291,8 @@
                 x2 = Math.abs(node2.x() + ((node1.radius() + node1.strokeWidth() / 2) * ((node1.x() - node2.x()) / h)));
                 y2 = Math.abs(node2.y() + ((node1.radius() + node1.strokeWidth() / 2) * ((node1.y() - node2.y()) / h)));
                 var line = new Konva.Line({
-                    text:String(node1._id)+' '+String(node2._id),
                     points: [x1, y1, x2, y2],
-                    stroke: "#226070",
+                    stroke: 'white',
                     strokeWidth: coeff / 12,
                 });
                 layer.add(line);
@@ -323,18 +300,17 @@
 
             drawConnect: function (layer, coeff) {
                 for (var i = 0; i < this.connect.length; i++) {
-                    this.addConnect(this.connect[i], layer, coeff);
+                    this.addConnect(this.connect[i], layer, i, coeff);
                 }
             },
 
-            ready: function () {
+            drawNodes: function () {
                 var coeff = this.width / this.dimensions[0];
                 this.height = coeff * this.dimensions[1];
                 var stage = new Konva.Stage({
                     container: "container",
                     width: this.width,
-                    height: this.height,
-                    draggable: true
+                    height: this.height
                 });
                 var layer = new Konva.Layer();
                 for (var i = 0; i < this.steps.length; i++) {
@@ -342,5 +318,9 @@
                 }
                 this.drawConnect(layer, coeff);
                 stage.add(layer);
+            },
+
+            ready: function () {
+                this.drawNodes();
             }
-        });
+ });
