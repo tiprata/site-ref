@@ -6,13 +6,13 @@
                     value: function () {
                         return [
                             {
-                                name: "Parkour diagnostique précoce",
+                                name: "parkour-diagnostiquePrecoce",
                                 description: "Parcour diagnostique précoce (moins de trois ans)",
                                 presentation: "",
                                 pos: [2, 6],
                             },
                             {
-                                name: "Parkour diagnostique",
+                                name: "parkour-diagnostique",
                                 description: "Parcour diagnostique généraliste",
                                 presentation: "",
                                 pos: [4, 6],
@@ -56,11 +56,9 @@
             matchChain: [],
 
             showParkour: function (parkour) {
-                console.log(parkour);
-                document.getElementById('container').innerHTML = "<" + parkour + "></" + parkour+ ">";
+                document.getElementById('current-parkour').innerHTML = "<" + parkour + "></" + parkour+ ">";
                 document.getElementById("parktext").innerHTML = " ";
                 document.getElementById("parkbouton").innerHTML = " ";
-                console.log(document.getElementById('container').innerHTML);
             },
             
             addNode: function(obj, coeff, layer, i) {
@@ -96,8 +94,8 @@
                     });
                     layer.add(logo);*/
                     node.on('click', function () {
-                        document.getElementById("parktext").innerHTML = "<h2 style=\"color: #00ff97\">" + obj.name + ": </h2>" + obj.presentation + "<br/>" + "<p style=\"color: #00ff97\">" + obj.description + "</p>";
-                        document.getElementById("parkbouton").innerHTML = "<paper-button raised onClick=\"document.querySelector('parkour-selector').showParkour('parkour-diagnostiquePrecoce')\">Afficher</paper-button>";
+                        document.getElementById("parktext").innerHTML = "<h2 style=\"color: #00ff97\">" + obj.description + ": </h2>";
+                        document.getElementById("parkbouton").innerHTML = "<paper-button raised onClick=\"document.querySelector('parkour-selector').showParkour('" + obj.name + "')\">Afficher</paper-button>";
                     });
                     node.on('mouseover', function () {
                         this.opacity(0.5);

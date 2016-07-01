@@ -1,29 +1,45 @@
-<h2>Sign up</h2>
-
+<style>
+  html body {
+    background-color: #226070;
+  }
+</style>
+<div class="row" style="margin-top: 10vw; padding-left: 20%">
+<h1 style="color: #00ff97; margin-left: 17vw">Inscription</h1><%= link_to(image_tag("interactblanc", size: "400x150"), '/', :style => "left: 12vw; position: relative;", :class => "logox1") %>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+<%= devise_error_messages! %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <div class="field">
+      <div class="input-group input-group-lg">
+    <span class="input-group-addon" id="sizing-addon1" style="background-color: #00ff97; color: #226070; border: 0; font-size: 20px;">
+      Addresse <%= f.label :email %> : 
+        </span>
+        
+    <%= f.email_field :email, autofocus: true, :style => 'height: 105%; width: 500px; background-color: #00ff97;border: 0; font-size: 45px;font-family: "Times New Roman", Georgia, Serif;' %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon" id="sizing-addon1" style="background-color: #00ff97; color: #226070; border: 0; font-size: 20px;">
+          <%= f.label :password %> : 
+        </span>
+        
+    
+    <%= f.password_field :password, autocomplete: "off", :placeholder => " 6 caractères minimum...", :style => 'height: 105%; width: 550px; background-color: #00ff97;border: 0; font-size: 45px;font-family: "Times New Roman", Georgia, Serif;' %>
+      </div>
   </div>
 
   <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon" id="sizing-addon1" style="background-color: #00ff97; color: #226070; border: 0; font-size: 20px;">
+        <%= f.label :password_confirmation %> : 
+      </span>
+      <%= f.password_field :password_confirmation, autocomplete: "off", :style => 'height: 105%; width: 400px; background-color: #00ff97;border: 0; font-size: 45px;font-family: "Times New Roman", Georgia, Serif;' %>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+</div>
+  <div class="actions" style="padding-left: 15%">
+    <%= f.submit "Valider", :class => "btn btn-block btn-lg btn-info", :style => "border-radius: 30px;padding: 15px;width: 230px; color: #00ff97; border-color: #00ff97; font-size: 200%; letter-spacing: 3px" %>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
 <%= render "devise/shared/links" %>
+<% end %>
+</div>

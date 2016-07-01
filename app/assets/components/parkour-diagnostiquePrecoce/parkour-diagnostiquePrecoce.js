@@ -106,6 +106,21 @@
                             [
                                 "Neuropediatre", "Bilan Ethiologique", 0
                             ],
+                            [
+                                "Psychologue", "Recour Medecin", 1
+                            ],
+                            [
+                                "Orthophoniste", "Recour Medecin", 1
+                            ],
+                            [
+                                "Psychométricien", "Recour Medecin", 1
+                            ],
+                            [
+                                "Neuropediatre", "Recour Medecin", 1
+                            ],
+                            [
+                                "Consultation Pedopsychiatre", "Recour Pedopsychiatre", 1
+                            ]
                         ]
                     }
                 },
@@ -160,19 +175,15 @@
                     strokeWidth: coeff / 12
                 });
                 layer.add(node);
-                    /* var logo = new Konva.Image({
-                        //add logo
-                    });
-                    layer.add(logo);*/
                     node.on('click', function () {
                         document.getElementById("parktext").innerHTML = "<h2 style=\"color: #00ff97\">" + obj.name + ": </h2>" + obj.presentation + "<br/>" + "<div style=\"color: #00ff97\">" + obj.description + "</div>";
-                        document.getElementById("status").innerHTML = "<paper-button raised " +
-                            " onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'Success\')\">Success</paper-button>" +
-                            "<paper-button raised onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'Failure\')\">Failure</paper-button>" +
-                            "<paper-button raised onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'ok\')\">Cancel</paper-button>"
+                        document.getElementById("parkbouton").innerHTML = "<paper-button raised " +
+                            " onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'Success\')\">Réussite</paper-button>" +
+                            "<paper-button raised onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'Failure\')\">Echec</paper-button>" +
+                            "<paper-button raised onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'ok\')\">Retour</paper-button>"
                             +
-                            "<paper-button raised onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'Reset\')\">Reset</paper-button>";
-                    });
+                            "<paper-button raised onClick=\"document.querySelector('parkour-diagnostiquePrecoce').changeStatus('" + obj.name + "', \'Reset\')\">Annulation</paper-button>";
+                        });
                     node.on('mouseover', function () {
                         this.opacity(0.5);
                         document.body.style.cursor = 'pointer';
@@ -192,14 +203,28 @@
                     this.matchChain[id] = "echec";
                     this.matchChain["Recour " + id] = "en cour";
                 } else if (rep == "Reset") {
-                    this.matchChain[id] = "en cour";
+                    var count = 0;
+                    var res = false;
+                    for (var i = 0; i < this.connect.length; i++) {
+                        if (this.connect[i][1] === id) {
+                            count++;
+                            if (this.matchChain[this.connect[i][0]] === "success") {
+                                res = true;
+                            }
+                        }
+                    }
+                    this.matchChain[id] = ((res === true) || (count === 0)) ? "en cour" : "neutre";
                 } else if (rep == "ok") {
-                    //viré le texte de bootstrap;
+                    document.getElementById("parktext").innerHTML = " ";
+                    document.getElementById("parkbouton").innerHTML = " ";
                 }
                 this.sortChain(id);
             },
 
             addConnect: function (connect, layer, i, coeff) {
+                if (connect[2] === 1) {
+                    return ;
+                }
                 var node1 = layer._getNodeById(connect[0]);
                 var node2 = layer._getNodeById(connect[1]);
                 var x1, y1, x2, y2, h;
@@ -217,11 +242,13 @@
             },
 
             sortChain: function (id) {
-                console.log(this.matchChain);
                 for (var i = 0; i < this.connect.length; i++) {
                     if (this.connect[i][0] === id) {
                         if ((this.matchChain[id] === "success") && (this.matchChain[this.connect[i][1]] === "neutre")) {
                             this.matchChain[this.connect[i][1]] = "en cour";
+                        }
+                        else if ((this.matchChain[id] === "neutre") && (this.matchChain[this.connect[i][1]] === "en cour")) {
+                            this.matchChain[this.connect[i][1]] = "neutre";
                         }
                         else if ((this.matchChain[id] === "echec") || (this.matchChain[id] === "en cour")) {
                             if (this.matchChain[this.connect[i][1]] === "en cour") {
@@ -230,6 +257,11 @@
                             if ((this.connect[i][2] === 1) && (this.matchChain[id] === "echec")) {
                                 this.matchChain[this.connect[i][1]] = "en cour";
                             }
+                        }
+                    }
+                    else if ((this.connect[i][1] === id) && (this.connect[i][2] === 1) && (this.matchChain[this.connect[i][1]] === "success")) {
+                        if (this.matchChain[this.connect[i][0]] === "echec") {
+                            this.matchChain[this.connect[i][0]] = "en cour";
                         }
                     }
                 }
@@ -265,11 +297,16 @@
             },
 
             ready: function () {
-                console.log("laule");
+                /*var elacombe = <%= user.elacombe %>;
+                if (elacombe) {
+                    this.keychain = elacombe[nom du parkour];
+                } else {
+                    this.keychain = getJSON(parkour.json);
+                }*/
                 this.keychain = ["en cour", "neutre", "neutre", "neutre", "neutre", "neutre", "neutre", "neutre", "neutre", "neutre", "neutre"];
                 this.getMatch();
-                this.drawNodes();
-                $("#datepicker").datepicker({
+                this.drawNodes();  
+                /*$("#datepicker").datepicker({
                     altField: "#datepicker",
                     closeText: 'Fermer',
                     prevText: 'Précédent',
@@ -282,6 +319,6 @@
                     dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
                     weekHeader: 'Sem.',
                     dateFormat: 'dd-mm-yy'
-                });
+                });*/
             }
  });

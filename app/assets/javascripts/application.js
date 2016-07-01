@@ -21,7 +21,6 @@
 
 var diag = document.getElementById("diag");
 var retourKtree = document.getElementById("retourKtree");
-var three = document.getElementById("three");
 var retourParkour = document.getElementById("retourParkour");
 if (!diag)
 {
@@ -47,10 +46,5 @@ if (retourKtree)
     document.querySelector('ktree-selector').showKtree('ktree-selector');
   });
 }
-if (three)
-{
-  three.addEventListener("click", function (){
-    document.querySelector('parkour-selector').showParkour('template-trois-parkour');
-  });
-}
+
                     
